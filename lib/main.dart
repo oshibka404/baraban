@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:faust_flutter/ui/param_slider.dart';
 import 'package:flutter/material.dart';
 import 'sound/dsp/dsp_api.dart';
 import 'sound/dsp/dsp_param_ids.dart';
@@ -124,14 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
               max: 1,
               label: "Trigger duration",
             ),
-            Text("Pitch: ${_pitch.toStringAsPrecision(3)} Hz"),
-            Slider(
-              value: _pitch,
-              onChanged: _setPitch,
-              min: 20,
-              max: 200,
-              label: "Pitch",
-            ),
+            DspParamSlider(DspParamIds.kick_pitch),
             Text("Click: ${_click.toStringAsPrecision(3)} sec"),
             Slider(
               value: _click,
