@@ -51,4 +51,4 @@ hh = hh_group(
     ) * hh_trigger
 );
 
-process = kick_drum, clap, hh :> _ <: _,_;
+process = kick_drum, clap, hh :> si.smoo <: _,_;
