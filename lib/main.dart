@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'dsp_api.dart';
 
@@ -27,7 +29,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  bool _gate = false;
+  double _duration = 0.2;
+  Timer? _timer;
 
   @override
   void initState() {
@@ -35,24 +38,51 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
   }
 
-  void _toggleBeep() {
+  void _triggerKick() {
+    var closeGate = () {
+      setState(() {
+        _timer = null;
+      });
+      DspApi.setParamValueByPath('/main/kick/gate', 0);
+    };
     setState(() {
-      _gate = !_gate;
+      _timer?.cancel();
+      _timer =
+          Timer(Duration(milliseconds: (_duration * 1000).toInt()), closeGate);
     });
+    DspApi.setParamValueByPath('/main/kick/gate', 0).then((_) {
+      DspApi.setParamValueByPath('/main/kick/gate', 1);
+    });
+  }
 
-    DspApi.setParamValue(0, _gate ? 1 : 0);
+  void _setDuration(double newDuration) {
+    setState(() {
+      _duration = newDuration;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: ElevatedButton(
-          onPressed: _toggleBeep,
-          child: Text(_gate ? 'Stop' : 'Beep'),
-          style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(
-                  _gate ? Colors.red : Colors.amber)),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: _triggerKick,
+              child: Text('Kick!'),
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                      _timer != null ? Colors.red : Colors.amber)),
+            ),
+            Slider(
+              value: _duration,
+              onChanged: _setDuration,
+              min: 0.01,
+              max: 1,
+              label: "Trigger duration",
+            ),
+          ],
         ),
       ),
     );
