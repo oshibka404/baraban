@@ -1,4 +1,5 @@
-import 'package:faust_flutter/ui/kick.dart';
+import 'package:faust_flutter/sound/dsp/dsp_param_ids.dart';
+import 'package:faust_flutter/ui/drum.dart';
 import 'package:flutter/material.dart';
 import 'sound/dsp/dsp_api.dart';
 
@@ -38,7 +39,13 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: KickDrum(),
+        child: Drum(DspParamIds.kick_gate, [
+          DspParamIds.kick_pitch,
+          DspParamIds.kick_click,
+          DspParamIds.kick_attack,
+          DspParamIds.kick_decay,
+          DspParamIds.kick_drive,
+        ]),
       ),
     );
   }
