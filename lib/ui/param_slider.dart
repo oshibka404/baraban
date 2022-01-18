@@ -5,7 +5,8 @@ import '../sound/dsp/dsp_params.dart';
 
 class DspParamSlider extends StatefulWidget {
   final int paramId;
-  DspParamSlider(this.paramId);
+  final ColorSwatch color;
+  DspParamSlider(this.paramId, this.color);
   @override
   _DspParamSliderState createState() => _DspParamSliderState(this.paramId);
 }
@@ -40,6 +41,8 @@ class _DspParamSliderState extends State<DspParamSlider> {
         Text("$_label: ${_value.toStringAsPrecision(3)} $_unit"),
         Slider(
           value: _value,
+          thumbColor: widget.color,
+          activeColor: widget.color,
           onChanged: _setValue,
           min: _minValue,
           max: _maxValue,

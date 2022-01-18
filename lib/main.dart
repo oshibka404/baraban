@@ -38,15 +38,16 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Drum(DspParamIds.kick_gate, [
-          DspParamIds.kick_pitch,
-          DspParamIds.kick_click,
-          DspParamIds.kick_attack,
-          DspParamIds.kick_decay,
-          DspParamIds.kick_drive,
-        ]),
-      ),
+      body: Drum(
+          DspParamIds.kick_gate,
+          [
+            DspParamIds.kick_pitch,
+            DspParamIds.kick_click,
+            DspParamIds.kick_attack,
+            DspParamIds.kick_decay,
+            DspParamIds.kick_drive,
+          ],
+          Colors.red),
     );
   }
 }
