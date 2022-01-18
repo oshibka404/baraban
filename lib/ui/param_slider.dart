@@ -1,6 +1,7 @@
 import 'package:faust_flutter/sound/dsp/dsp_api.dart';
-import 'package:faust_flutter/sound/dsp/dsp_param_ids.dart';
 import 'package:flutter/material.dart';
+
+import '../sound/dsp/dsp_params.dart';
 
 class DspParamSlider extends StatefulWidget {
   final int paramId;
@@ -12,14 +13,12 @@ class DspParamSlider extends StatefulWidget {
 class _DspParamSliderState extends State<DspParamSlider> {
   _DspParamSliderState(int paramId)
       : this.id = paramId,
-        this._value = (getDspParamProperties(paramId).min +
-            (getDspParamProperties(paramId).min +
-                    getDspParamProperties(paramId).max) /
-                4),
-        this._minValue = getDspParamProperties(paramId).min,
-        this._maxValue = getDspParamProperties(paramId).max,
-        this._label = getDspParamProperties(paramId).label,
-        this._unit = getDspParamProperties(paramId).unit;
+        this._value = (getDspParam(paramId).min +
+            (getDspParam(paramId).min + getDspParam(paramId).max) / 4),
+        this._minValue = getDspParam(paramId).min,
+        this._maxValue = getDspParam(paramId).max,
+        this._label = getDspParam(paramId).label,
+        this._unit = getDspParam(paramId).unit;
 
   int id;
   double _value;
@@ -49,27 +48,4 @@ class _DspParamSliderState extends State<DspParamSlider> {
       ],
     );
   }
-}
-
-const Map<int, DspParamProperties> DspParamPropertiesMap = {
-  DspParamIds.kick_pitch: const DspParamProperties(20, 200, "Pitch", "Hz"),
-  DspParamIds.kick_click: const DspParamProperties(0.005, 1, "Click", "sec"),
-  DspParamIds.kick_attack:
-      const DspParamProperties(0.005, 0.4, "Attack", "sec"),
-  DspParamIds.kick_decay: const DspParamProperties(0.01, 4, "Decay", "sec"),
-  DspParamIds.kick_drive: const DspParamProperties(1, 10, "Drive", "X"),
-};
-
-var getDspParamProperties = (int paramId) {
-  return DspParamPropertiesMap[paramId] ??
-      DspParamProperties(0, 1, '???', '??');
-};
-
-class DspParamProperties {
-  const DspParamProperties(this.min, this.max, this.label, this.unit);
-
-  final double min;
-  final double max;
-  final String label;
-  final String unit;
 }

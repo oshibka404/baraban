@@ -1,8 +1,6 @@
-import 'package:faust_flutter/ui/param_slider.dart';
-import 'package:faust_flutter/ui/trigger_button.dart';
+import 'package:faust_flutter/ui/kick.dart';
 import 'package:flutter/material.dart';
 import 'sound/dsp/dsp_api.dart';
-import 'sound/dsp/dsp_param_ids.dart';
 
 void main() {
   runApp(MyApp());
@@ -40,17 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TriggerButton(DspParamIds.kick_gate),
-            DspParamSlider(DspParamIds.kick_pitch),
-            DspParamSlider(DspParamIds.kick_click),
-            DspParamSlider(DspParamIds.kick_attack),
-            DspParamSlider(DspParamIds.kick_decay),
-            DspParamSlider(DspParamIds.kick_drive),
-          ],
-        ),
+        child: KickDrum(),
       ),
     );
   }
