@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../sound/dsp/dsp_params.dart';
 import 'param_slider.dart';
 
 class DrumParamControls extends StatelessWidget {
@@ -8,9 +9,17 @@ class DrumParamControls extends StatelessWidget {
   DrumParamControls(this._paramIds, this.color);
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [..._paramIds.map((id) => DspParamSlider(id, color))],
+    return FutureBuilder(
+      builder: ((context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [..._paramIds.map((id) => DspParamSlider(id, color))],
+          );
+        }
+        return Text("loading...");
+      }),
+      future: loadDspParams(),
     );
   }
 }

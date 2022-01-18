@@ -14,8 +14,7 @@ class DspParamSlider extends StatefulWidget {
 class _DspParamSliderState extends State<DspParamSlider> {
   _DspParamSliderState(int paramId)
       : this.id = paramId,
-        this._value = (getDspParam(paramId).min +
-            (getDspParam(paramId).min + getDspParam(paramId).max) / 4),
+        this._value = getDspParam(paramId).initialValue,
         this._minValue = getDspParam(paramId).min,
         this._maxValue = getDspParam(paramId).max,
         this._label = getDspParam(paramId).label,
