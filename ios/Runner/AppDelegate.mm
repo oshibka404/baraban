@@ -10,6 +10,8 @@
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     dspFaust = new DspFaust(44100, 256); // TODO: get rid of hardcoded SR & buff size
+    dspFaust->start();
+    
     FlutterViewController* controller = (FlutterViewController*)self.window.rootViewController;
     
     FlutterMethodChannel* synthControlChannel = [FlutterMethodChannel

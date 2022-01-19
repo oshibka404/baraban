@@ -1,7 +1,6 @@
 import 'package:faust_flutter/sound/dsp/dsp_param_ids.dart';
 import 'package:faust_flutter/ui/drum.dart';
 import 'package:flutter/material.dart';
-import 'sound/dsp/dsp_api.dart';
 
 void main() {
   runApp(MyApp());
@@ -29,12 +28,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  @override
-  void initState() {
-    DspApi.start();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
