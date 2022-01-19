@@ -233,4 +233,13 @@ class DspApi {
       throw 'Could not stop audio processing: ${e.message}';
     }
   }
+
+  static Future<List<double>> getAllParamValues() async {
+    var paramsCount = await DspApi.getParamsCount() ?? 0;
+    List<double> values = [];
+    for (int id = 0; id < paramsCount; id++) {
+      values.add(await DspApi.getParamValue(id) ?? 0);
+    }
+    return values;
+  }
 }
