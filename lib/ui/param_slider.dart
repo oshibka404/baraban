@@ -1,5 +1,5 @@
-import 'package:faust_flutter/sound/dsp/dsp_api.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../sound/dsp/dsp_params.dart';
 
@@ -14,40 +14,38 @@ class DspParamSlider extends StatefulWidget {
 class _DspParamSliderState extends State<DspParamSlider> {
   _DspParamSliderState(int paramId)
       : this.id = paramId,
-        this._value = getDspParam(paramId).initialValue,
         this._minValue = getDspParam(paramId).min,
         this._maxValue = getDspParam(paramId).max,
         this._label = getDspParam(paramId).label,
         this._unit = getDspParam(paramId).unit;
 
-  int id;
-  double _value;
-  double _minValue;
-  double _maxValue;
-  String _label;
-  String _unit;
-  _setValue(double value) {
-    setState(() {
-      _value = value;
-    });
-    DspApi.setParamValue(id, value);
-  }
+  final int id;
+  final double _minValue;
+  final double _maxValue;
+  final String _label;
+  final String _unit;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text("$_label: ${_value.toStringAsPrecision(3)} $_unit"),
-        Slider(
-          value: _value,
-          thumbColor: widget.color,
-          activeColor: widget.color,
-          onChanged: _setValue,
-          min: _minValue,
-          max: _maxValue,
-          label: _label,
-        ),
-      ],
+    return Consumer<DspParams>(
+      builder: (context, dspParams, child) {
+        double value = dspParams.getValue(id) ?? _minValue;
+
+        return Column(
+          children: [
+            Text("$_label: ${value.toStringAsPrecision(3)} $_unit"),
+            Slider(
+              value: value,
+              thumbColor: widget.color,
+              activeColor: widget.color,
+              onChanged: (value) => dspParams.setValue(id, value),
+              min: _minValue,
+              max: _maxValue,
+              label: _label,
+            ),
+          ],
+        );
+      },
     );
   }
 }

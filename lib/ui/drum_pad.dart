@@ -1,6 +1,6 @@
+import 'package:faust_flutter/sound/dsp/dsp_params.dart';
 import 'package:flutter/material.dart';
-
-import '../sound/dsp/dsp_api.dart';
+import 'package:provider/provider.dart';
 
 class DrumPad extends StatefulWidget {
   final int paramId;
@@ -14,34 +14,22 @@ class DrumPad extends StatefulWidget {
 }
 
 class _State extends State<DrumPad> {
-  bool _gate = false;
   _State();
-
-  void onTapDown(TapDownDetails event) {
-    setState(() {
-      _gate = true;
-    });
-    DspApi.setParamValue(widget.paramId, 1);
-  }
-
-  void onTapUp(TapUpDetails event) {
-    setState(() {
-      _gate = false;
-    });
-    DspApi.setParamValue(widget.paramId, 0);
-  }
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      child: Container(
-        width: widget.size.width,
-        height: widget.size.height,
-        decoration:
-            BoxDecoration(color: widget.color.withOpacity(_gate ? 0.8 : 1)),
-      ),
-      onTapDown: onTapDown,
-      onTapUp: onTapUp,
-    );
+    return Consumer<DspParams>(
+        builder: (context, params, child) => GestureDetector(
+              child: Container(
+                width: widget.size.width,
+                height: widget.size.height,
+                decoration: BoxDecoration(
+                    color: widget.color.withOpacity(
+                        params.getValue(widget.paramId) != 0 ? 0.8 : 1)),
+              ),
+              onTapDown: (event) => params.setValue(widget.paramId, 1),
+              onTapUp: (event) => params.setValue(widget.paramId, 0),
+              onTapCancel: () => params.setValue(widget.paramId, 0),
+            ));
   }
 }

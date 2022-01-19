@@ -1,6 +1,9 @@
 import 'package:faust_flutter/sound/dsp/dsp_param_ids.dart';
 import 'package:faust_flutter/ui/drum.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'sound/dsp/dsp_params.dart';
 
 void main() {
   runApp(MyApp());
@@ -31,16 +34,19 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Drum(
-          DspParamIds.kick_gate,
-          [
-            DspParamIds.kick_pitch,
-            DspParamIds.kick_click,
-            DspParamIds.kick_attack,
-            DspParamIds.kick_decay,
-            DspParamIds.kick_drive,
-          ],
-          Colors.red),
+      body: ChangeNotifierProvider(
+        child: Drum(
+            DspParamIds.kick_gate,
+            [
+              DspParamIds.kick_pitch,
+              DspParamIds.kick_click,
+              DspParamIds.kick_attack,
+              DspParamIds.kick_decay,
+              DspParamIds.kick_drive,
+            ],
+            Colors.red),
+        create: (context) => DspParams(),
+      ),
     );
   }
 }

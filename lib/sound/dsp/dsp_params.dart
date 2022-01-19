@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:faust_flutter/sound/dsp/dsp_api.dart';
+import 'package:flutter/foundation.dart';
 
 import 'dsp_param_ids.dart';
 
@@ -34,3 +37,40 @@ var loadDspParams = () async {
     dspParams[id]!.max = await DspApi.getParamMax(id) ?? 1;
   }
 };
+
+class DspParams extends ChangeNotifier {
+  late Timer _timer;
+  DspParams() {
+    _timer = Timer.periodic(Duration(milliseconds: 20), (_) {
+      if (hasListeners) {
+        update();
+      }
+    });
+  }
+
+  dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  List<double> _values = [];
+
+  double? getValue(int id) {
+    if (_values.length > id) {
+      return _values[id];
+    }
+    return null;
+  }
+
+  void setValue(int id, double value) {
+    DspApi.setParamValue(id, value);
+  }
+
+  void update() async {
+    var newValues = await DspApi.getAllParamValues();
+    if (!listEquals(_values, newValues)) {
+      _values = newValues;
+      notifyListeners();
+    }
+  }
+}
