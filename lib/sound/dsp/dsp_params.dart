@@ -5,18 +5,19 @@ import 'package:flutter/foundation.dart';
 
 import 'dsp_param_ids.dart';
 
-Map<int, DspParam> dspParams = {
-  DspParamIds.kick_pitch: DspParam("Pitch", "Hz"),
-  DspParamIds.kick_click: DspParam("Click", "sec"),
-  DspParamIds.kick_attack: DspParam("Attack", "sec"),
-  DspParamIds.kick_decay: DspParam("Decay", "sec"),
-  DspParamIds.kick_drive: DspParam("Drive", "X"),
+Map<int, _DspParam> _dspParams = {
+  DspParamIds.kick_pitch: _DspParam("Pitch", "Hz"),
+  DspParamIds.kick_click: _DspParam("Click", "sec"),
+  DspParamIds.kick_attack: _DspParam("Attack", "sec"),
+  DspParamIds.kick_decay: _DspParam("Decay", "sec"),
+  DspParamIds.kick_drive: _DspParam("Drive", "X"),
 };
 
-var getDspParam = (int paramId) => dspParams[paramId] ?? DspParam('???', '??');
+var getDspParam =
+    (int paramId) => _dspParams[paramId] ?? _DspParam('???', '??');
 
-class DspParam {
-  DspParam(this.label, this.unit);
+class _DspParam {
+  _DspParam(this.label, this.unit);
 
   double min = 0;
   double max = 1;
@@ -29,12 +30,12 @@ class DspParam {
 var loadDspParams = () async {
   var paramsCount = await DspApi.getParamsCount() ?? 0;
   for (int id = 0; id < paramsCount; id++) {
-    if (!dspParams.containsKey(id)) {
-      dspParams[id] = DspParam("???", "??");
+    if (!_dspParams.containsKey(id)) {
+      _dspParams[id] = _DspParam("???", "??");
     }
-    dspParams[id]!.initialValue = await DspApi.getParamInit(id) ?? 0;
-    dspParams[id]!.min = await DspApi.getParamMin(id) ?? 0;
-    dspParams[id]!.max = await DspApi.getParamMax(id) ?? 1;
+    _dspParams[id]!.initialValue = await DspApi.getParamInit(id) ?? 0;
+    _dspParams[id]!.min = await DspApi.getParamMin(id) ?? 0;
+    _dspParams[id]!.max = await DspApi.getParamMax(id) ?? 1;
   }
 };
 
