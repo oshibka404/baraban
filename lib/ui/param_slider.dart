@@ -1,3 +1,4 @@
+import 'package:faust_flutter/ui/log_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,17 +14,19 @@ class DspParamSlider extends StatefulWidget {
 
 class _DspParamSliderState extends State<DspParamSlider> {
   _DspParamSliderState(int paramId)
-      : this.id = paramId,
-        this._minValue = getDspParam(paramId).min,
-        this._maxValue = getDspParam(paramId).max,
-        this._label = getDspParam(paramId).label,
-        this._unit = getDspParam(paramId).unit;
+      : id = paramId,
+        _minValue = getDspParam(paramId).min,
+        _maxValue = getDspParam(paramId).max,
+        _label = getDspParam(paramId).label,
+        _unit = getDspParam(paramId).unit,
+        _logScale = getDspParam(paramId).logScale;
 
   final int id;
   final double _minValue;
   final double _maxValue;
   final String _label;
   final String _unit;
+  final bool _logScale;
 
   @override
   Widget build(BuildContext context) {
@@ -34,15 +37,25 @@ class _DspParamSliderState extends State<DspParamSlider> {
         return Column(
           children: [
             Text("$_label: ${value.toStringAsPrecision(3)} $_unit"),
-            Slider(
-              value: value,
-              thumbColor: widget.color,
-              activeColor: widget.color,
-              onChanged: (value) => dspParams.setValue(id, value),
-              min: _minValue,
-              max: _maxValue,
-              label: _label,
-            ),
+            _logScale
+                ? LogSlider(
+                    value: value,
+                    thumbColor: widget.color,
+                    activeColor: widget.color,
+                    onChanged: (value) => dspParams.setValue(id, value),
+                    min: _minValue,
+                    max: _maxValue,
+                    label: _label,
+                  )
+                : Slider(
+                    value: value,
+                    thumbColor: widget.color,
+                    activeColor: widget.color,
+                    onChanged: (value) => dspParams.setValue(id, value),
+                    min: _minValue,
+                    max: _maxValue,
+                    label: _label,
+                  ),
           ],
         );
       },

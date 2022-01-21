@@ -10,15 +10,16 @@ Map<int, _DspParam> _dspParams = {
   DspParamIds.kick_click: _DspParam("Click", "sec"),
   DspParamIds.kick_attack: _DspParam("Attack", "sec"),
   DspParamIds.kick_decay: _DspParam("Decay", "sec"),
-  DspParamIds.kick_drive: _DspParam("Drive", "X"),
+  DspParamIds.kick_drive: _DspParam("Drive", "X", logScale: false),
 };
 
 var getDspParam =
     (int paramId) => _dspParams[paramId] ?? _DspParam('???', '??');
 
 class _DspParam {
-  _DspParam(this.label, this.unit);
+  _DspParam(this.label, this.unit, {this.logScale = true});
 
+  final bool logScale;
   double min = 0;
   double max = 1;
   double initialValue = 0.25;
